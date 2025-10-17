@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/kothapallisai1994/trading-ui.git', branch: 'master'
+                git url: 'https://github.com/sami188440/Trading-UI.git', branch: 'master' 
             }
         }
 
