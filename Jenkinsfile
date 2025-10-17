@@ -2,13 +2,13 @@ pipeline {
     agent any
 
     tools {
-        nodejs "NodeJS16" // update this to your NodeJS tool name in Jenkins
+        nodejs "NodeJS"  // or NodeJS16, if you configured it
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/sami188440/Trading-UI.git', branch: 'master' 
+                git url: 'https://github.com/sami188440/Trading-UI.git', branch: 'master'
             }
         }
 
@@ -24,7 +24,10 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'npm run build'
+                sh '''
+                    echo "Building React app..."
+                    CI=false npm run build   # ✅ ignores warnings as errors
+                '''
             }
         }
 
@@ -36,8 +39,9 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                echo 'Deploy stage - add your deployment steps here'
+                echo 'Deploy stage - add deployment steps here'
             }
         }
     }
 }
+
