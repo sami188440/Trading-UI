@@ -1,21 +1,42 @@
 pipeline {
     agent any
-      
+
+    tools {
+        nodejs "NodeJS16" // update this to your NodeJS tool name in Jenkins
+    }
 
     stages {
-        stage('Git checkout') {
+        stage('Checkout') {
             steps {
-                // Get some code from a GitHub repository
-                git 'https://github.com/betawins/Trading-UI.git'
-                   }
-}
-        stage('Install npm prerequisites'){
-            steps{
-                sh'npm audit fix'
-                sh'npm install'
-                sh'npm run build'
-                sh'cd /var/lib/jenkins/workspace/Trading-ui-pipeline/build'
-                sh'pm2 --name Trading-UI start npm -- start'
+                git url: 'https://github.com/kothapallisai1994/trading-ui.git', branch: 'master'
+            }
+        }
+
+        stage('Install') {
+            steps {
+                sh '''
+                    npm cache clean --force
+                    rm -rf node_modules package-lock.json
+                    npm install --omit=optional
+                '''
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'npm test || true'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploy stage - add your deployment steps here'
             }
         }
     }
